@@ -12,12 +12,25 @@ class HistoricalEvent extends Model
         'event_year',
         'short_description',
         'long_description',
-        'image_path',
-        'video_url',
     ];
 
     public function parallelUniverse()
     {
         return $this->belongsTo(ParallelUniverse::class);
+    }
+
+    public function media()
+    {
+        return $this->morphMany(Media::class, 'mediable');
+    }
+
+    public function images()
+    {
+        return $this->morphMany(Media::class, 'mediable')->where('file_type', 'image');
+    }
+
+    public function videos()
+    {
+        return $this->morphMany(Media::class, 'mediable')->where('file_type', 'video');
     }
 }
