@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\ParallelUniverse;
+use Illuminate\Http\Request;
+
+class ParallelUniverseController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        $universes = ParallelUniverse::all();
+        return view('admin.universes.index', compact('universes'));
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view('admin.universes.create');
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'divergence_point' => 'required|string|max:255',
+            'description' => 'required|string',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('cover_image')) {
+            $validated['cover_image_path'] = $request->file('cover_image')->store('universes', 'public');
+        }
+
+        ParallelUniverse::create($validated);
+
+        return redirect()->route('admin.universes.index')->with('success', 'Universe created successfully.');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(ParallelUniverse $parallelUniverse)
+    {
+        return view('admin.universes.show', compact('parallelUniverse'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(ParallelUniverse $parallelUniverse)
+    {
+        return view('admin.universes.edit', compact('parallelUniverse'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, ParallelUniverse $parallelUniverse)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'divergence_point' => 'required|string|max:255',
+            'description' => 'required|string',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($request->hasFile('cover_image')) {
+            // Delete old image if exists
+            if ($parallelUniverse->cover_image_path) {
+                \Storage::disk('public')->delete($parallelUniverse->cover_image_path);
+            }
+            $validated['cover_image_path'] = $request->file('cover_image')->store('universes', 'public');
+        }
+
+        $parallelUniverse->update($validated);
+
+        return redirect()->route('admin.universes.index')->with('success', 'Universe updated successfully.');
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(ParallelUniverse $parallelUniverse)
+    {
+        // Delete image if exists
+        if ($parallelUniverse->cover_image_path) {
+            \Storage::disk('public')->delete($parallelUniverse->cover_image_path);
+        }
+
+        $parallelUniverse->delete();
+
+        return redirect()->route('admin.universes.index')->with('success', 'Universe deleted successfully.');
+    }
+}
