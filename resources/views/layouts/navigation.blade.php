@@ -27,6 +27,9 @@
                             <x-nav-link :href="route('admin.events.index')" :active="request()->routeIs('admin.events.*')">
                                 {{ __('Events') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('admin.events.mass-upload')" :active="request()->routeIs('admin.events.mass-upload')">
+                                {{ __('Mass Upload Events') }}
+                            </x-nav-link>
                             <x-nav-link :href="route('admin.news.index')" :active="request()->routeIs('admin.news.*')">
                                 {{ __('News') }}
                             </x-nav-link>
@@ -98,6 +101,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.events.index')" :active="request()->routeIs('admin.events.*')">
                         {{ __('Events') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.events.mass-upload')" :active="request()->routeIs('admin.events.mass-upload')">
+                        {{ __('Mass Upload Events') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.news.index')" :active="request()->routeIs('admin.news.*')">
                         {{ __('News') }}

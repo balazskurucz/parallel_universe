@@ -51,8 +51,8 @@
                 @forelse($events as $event)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($event->image_path)
-                                <img src="{{ asset('storage/' . $event->image_path) }}" 
+                            @if($event->coverImage)
+                                <img src="{{ asset('storage/' . $event->coverImage->file_path) }}" 
                                      alt="{{ $event->title }}" 
                                      class="h-16 w-16 object-cover rounded">
                             @else

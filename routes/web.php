@@ -31,6 +31,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     })->name('dashboard');
 
     Route::resource('universes', ParallelUniverseController::class);
+    Route::get('events/mass-upload', [HistoricalEventController::class, 'massUploadForm'])->name('events.mass-upload');
+    Route::post('events/mass-upload', [HistoricalEventController::class, 'massUploadProcess'])->name('events.mass-upload.process');
     Route::resource('events', HistoricalEventController::class);
     Route::resource('news', NewsBroadcastController::class);
     Route::resource('media', MediaController::class);
