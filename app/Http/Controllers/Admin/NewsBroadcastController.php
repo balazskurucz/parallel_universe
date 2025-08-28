@@ -24,7 +24,8 @@ class NewsBroadcastController extends Controller
     public function create()
     {
         $universes = ParallelUniverse::all();
-        return view('admin.news.create', compact('universes'));
+        $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+        return view('admin.news.create', compact('universes', 'mediaFiles'));
     }
 
     /**
@@ -38,13 +39,8 @@ class NewsBroadcastController extends Controller
             'broadcast_date' => 'required|date',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'nullable|url',
+            'cover_image_id' => 'nullable|exists:media,id',
         ]);
-
-        if ($request->hasFile('image')) {
-            $validated['image_path'] = $request->file('image')->store('news', 'public');
-        }
 
         NewsBroadcast::create($validated);
 
@@ -65,7 +61,8 @@ class NewsBroadcastController extends Controller
     public function edit(NewsBroadcast $newsBroadcast)
     {
         $universes = ParallelUniverse::all();
-        return view('admin.news.edit', compact('newsBroadcast', 'universes'));
+        $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+        return view('admin.news.edit', compact('newsBroadcast', 'universes', 'mediaFiles'));
     }
 
     /**
@@ -79,17 +76,8 @@ class NewsBroadcastController extends Controller
             'broadcast_date' => 'required|date',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'nullable|url',
+            'cover_image_id' => 'nullable|exists:media,id',
         ]);
-
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($newsBroadcast->image_path) {
-                \Storage::disk('public')->delete($newsBroadcast->image_path);
-            }
-            $validated['image_path'] = $request->file('image')->store('news', 'public');
-        }
 
         $newsBroadcast->update($validated);
 
@@ -101,11 +89,6 @@ class NewsBroadcastController extends Controller
      */
     public function destroy(NewsBroadcast $newsBroadcast)
     {
-        // Delete image if exists
-        if ($newsBroadcast->image_path) {
-            \Storage::disk('public')->delete($newsBroadcast->image_path);
-        }
-
         $newsBroadcast->delete();
 
         return redirect()->route('admin.news.index')->with('success', 'News broadcast deleted successfully.');

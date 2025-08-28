@@ -24,7 +24,8 @@ class HistoricalEventController extends Controller
     public function create()
     {
         $universes = ParallelUniverse::all();
-        return view('admin.events.create', compact('universes'));
+        $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+        return view('admin.events.create', compact('universes', 'mediaFiles'));
     }
 
     /**
@@ -38,13 +39,8 @@ class HistoricalEventController extends Controller
             'event_year' => 'required|integer|min:1|max:9999',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'nullable|url',
+            'cover_image_id' => 'nullable|exists:media,id',
         ]);
-
-        if ($request->hasFile('image')) {
-            $validated['image_path'] = $request->file('image')->store('events', 'public');
-        }
 
         HistoricalEvent::create($validated);
 
@@ -65,7 +61,8 @@ class HistoricalEventController extends Controller
     public function edit(HistoricalEvent $historicalEvent)
     {
         $universes = ParallelUniverse::all();
-        return view('admin.events.edit', compact('historicalEvent', 'universes'));
+        $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+        return view('admin.events.edit', compact('historicalEvent', 'universes', 'mediaFiles'));
     }
 
     /**
@@ -79,17 +76,8 @@ class HistoricalEventController extends Controller
             'event_year' => 'required|integer|min:1|max:9999',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url' => 'nullable|url',
+            'cover_image_id' => 'nullable|exists:media,id',
         ]);
-
-        if ($request->hasFile('image')) {
-            // Delete old image if exists
-            if ($historicalEvent->image_path) {
-                \Storage::disk('public')->delete($historicalEvent->image_path);
-            }
-            $validated['image_path'] = $request->file('image')->store('events', 'public');
-        }
 
         $historicalEvent->update($validated);
 
@@ -101,11 +89,6 @@ class HistoricalEventController extends Controller
      */
     public function destroy(HistoricalEvent $historicalEvent)
     {
-        // Delete image if exists
-        if ($historicalEvent->image_path) {
-            \Storage::disk('public')->delete($historicalEvent->image_path);
-        }
-
         $historicalEvent->delete();
 
         return redirect()->route('admin.events.index')->with('success', 'Historical event deleted successfully.');

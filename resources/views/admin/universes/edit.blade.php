@@ -34,20 +34,21 @@
     @endif
 
     <div class="bg-white shadow-md rounded-lg p-6">
-        <form action="{{ route('admin.universes.update', $universe) }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+        <form action="{{ route('admin.universes.update', $universe) }}" method="POST" class="space-y-6">
             @csrf
             @method('PUT')
 
             <!-- Current Cover Image -->
-            @if($universe->cover_image_path)
+            @if($universe->coverImage)
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">
                         Current Cover Image
                     </label>
                     <div class="mb-4">
-                        <img src="{{ asset('storage/' . $universe->cover_image_path) }}" 
-                             alt="{{ $universe->name }}" 
+                        <img src="{{ $universe->coverImage->url }}" 
+                             alt="{{ $universe->coverImage->alt_text ?? $universe->name }}" 
                              class="h-32 w-auto object-cover rounded border">
+                        <p class="text-sm text-gray-500 mt-1">{{ $universe->coverImage->file_name }}</p>
                     </div>
                 </div>
             @endif
@@ -97,39 +98,18 @@
                 <p class="mt-1 text-sm text-gray-500">A detailed description of this universe and its unique features</p>
             </div>
 
-            <!-- Cover Image Upload -->
-            <div>
-                <label for="cover_image" class="block text-sm font-medium text-gray-700 mb-2">
-                    {{ $universe->cover_image_path ? 'Replace Cover Image' : 'Cover Image' }}
-                </label>
-                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md hover:border-gray-400 transition-colors">
-                    <div class="space-y-1 text-center">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
-                        <div class="flex text-sm text-gray-600">
-                            <label for="cover_image" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                <span>{{ $universe->cover_image_path ? 'Upload new image' : 'Upload a cover image' }}</span>
-                                <input id="cover_image" name="cover_image" type="file" class="sr-only" 
-                                       accept="image/*" onchange="displayFileName(this)">
-                            </label>
-                            <p class="pl-1">or drag and drop</p>
-                        </div>
-                        <p class="text-xs text-gray-500">
-                            PNG, JPG, GIF up to 2MB
-                            @if($universe->cover_image_path)
-                                <br><span class="text-orange-600">Leave empty to keep current image</span>
-                            @endif
-                        </p>
-                        <p id="file-name" class="text-sm text-gray-900 font-medium hidden"></p>
-                    </div>
-                </div>
-            </div>
+            <!-- Cover Image Selection -->
+            <x-media-selector 
+                name="cover_image_id" 
+                :value="old('cover_image_id', $universe->cover_image_id)" 
+                label="Cover Image" 
+                :media-files="$mediaFiles" />
+
 
             <!-- Related Content Summary -->
             <div class="bg-gray-50 rounded-lg p-4">
                 <h3 class="text-lg font-medium text-gray-900 mb-3">Related Content Summary</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div class="flex items-center">
                         <svg class="w-4 h-4 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
@@ -144,14 +124,6 @@
                         </svg>
                         <span class="text-gray-700">
                             {{ $universe->newsBroadcasts->count() }} News Broadcasts
-                        </span>
-                    </div>
-                    <div class="flex items-center">
-                        <svg class="w-4 h-4 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <span class="text-gray-700">
-                            {{ $universe->media->count() }} Media Files
                         </span>
                     </div>
                 </div>
@@ -190,15 +162,4 @@
         </div>
     </div>
 
-    <script>
-    function displayFileName(input) {
-        const fileNameElement = document.getElementById('file-name');
-        if (input.files && input.files[0]) {
-            fileNameElement.textContent = 'Selected: ' + input.files[0].name;
-            fileNameElement.classList.remove('hidden');
-        } else {
-            fileNameElement.classList.add('hidden');
-        }
-    }
-    </script>
 </x-app-layout>

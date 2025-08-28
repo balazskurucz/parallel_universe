@@ -10,7 +10,18 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between items-center mb-6">
-                        <div></div>
+                        <div class="flex items-center space-x-4">
+                            <div>
+                                <label for="folder-filter" class="block text-sm font-medium text-gray-700 mb-1">Filter by Folder:</label>
+                                <select id="folder-filter" onchange="filterByFolder()" 
+                                        class="block w-48 pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                                    <option value="">All Folders</option>
+                                    @foreach($folders as $folder)
+                                        <option value="{{ $folder }}">{{ $folder }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <a href="{{ route('admin.media.create') }}" 
                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                             Upload New Media
@@ -34,7 +45,7 @@
                         File Info
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Connected To
+                        Folder
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Type
@@ -73,28 +84,9 @@
                             @endif
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($item->mediable)
-                                <div class="text-sm text-gray-900">
-                                    @if($item->mediable instanceof \App\Models\ParallelUniverse)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                            Universe
-                                        </span>
-                                        <div class="mt-1">{{ $item->mediable->name }}</div>
-                                    @elseif($item->mediable instanceof \App\Models\HistoricalEvent)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Event
-                                        </span>
-                                        <div class="mt-1">{{ $item->mediable->title }}</div>
-                                    @elseif($item->mediable instanceof \App\Models\NewsBroadcast)
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                            News
-                                        </span>
-                                        <div class="mt-1">{{ $item->mediable->headline }}</div>
-                                    @endif
-                                </div>
-                            @else
-                                <span class="text-gray-400">Not connected</span>
-                            @endif
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                {{ $item->folder_name ?: 'general' }}
+                            </span>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
@@ -140,4 +132,29 @@
             </div>
         </div>
     </div>
+
+    <script>
+    function filterByFolder() {
+        const filterValue = document.getElementById('folder-filter').value.toLowerCase();
+        const tableRows = document.querySelectorAll('tbody tr');
+        
+        tableRows.forEach(row => {
+            if (row.querySelector('td[colspan]')) {
+                // Skip empty state row
+                return;
+            }
+            
+            const folderCell = row.cells[2]; // Folder is the 3rd column (index 2)
+            if (folderCell) {
+                const folderName = folderCell.textContent.trim().toLowerCase();
+                
+                if (filterValue === '' || folderName === filterValue) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    }
+    </script>
 </x-app-layout>

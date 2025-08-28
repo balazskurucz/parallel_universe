@@ -12,6 +12,7 @@ class HistoricalEvent extends Model
         'event_year',
         'short_description',
         'long_description',
+        'cover_image_id',
     ];
 
     public function parallelUniverse()
@@ -19,18 +20,8 @@ class HistoricalEvent extends Model
         return $this->belongsTo(ParallelUniverse::class);
     }
 
-    public function media()
+    public function coverImage()
     {
-        return $this->morphMany(Media::class, 'mediable');
-    }
-
-    public function images()
-    {
-        return $this->morphMany(Media::class, 'mediable')->where('file_type', 'image');
-    }
-
-    public function videos()
-    {
-        return $this->morphMany(Media::class, 'mediable')->where('file_type', 'video');
+        return $this->belongsTo(Media::class, 'cover_image_id');
     }
 }

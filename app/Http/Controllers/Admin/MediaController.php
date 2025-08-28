@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Media;
-use App\Models\ParallelUniverse;
-use App\Models\HistoricalEvent;
-use App\Models\NewsBroadcast;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -17,11 +14,17 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $media = Media::with('mediable')
+        $media = Media::orderBy('folder_name', 'asc')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
-        return view('admin.media.index', compact('media'));
+        $folders = Media::select('folder_name')
+            ->distinct()
+            ->whereNotNull('folder_name')
+            ->orderBy('folder_name')
+            ->pluck('folder_name');
+
+        return view('admin.media.index', compact('media', 'folders'));
     }
 
     /**
@@ -29,11 +32,13 @@ class MediaController extends Controller
      */
     public function create()
     {
-        $universes = ParallelUniverse::orderBy('name')->get();
-        $events = HistoricalEvent::with('parallelUniverse')->orderBy('title')->get();
-        $news = NewsBroadcast::with('parallelUniverse')->orderBy('headline')->get();
+        $folders = Media::select('folder_name')
+            ->distinct()
+            ->whereNotNull('folder_name')
+            ->orderBy('folder_name')
+            ->pluck('folder_name');
 
-        return view('admin.media.create', compact('universes', 'events', 'news'));
+        return view('admin.media.create', compact('folders'));
     }
 
     /**
@@ -45,35 +50,34 @@ class MediaController extends Controller
             'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,wmv|max:51200', // 50MB max
             'alt_text' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'mediable_type' => 'required|in:universe,event,news',
-            'mediable_id' => 'required|integer',
+            'folder_name' => 'nullable|string|max:255',
         ]);
-
-        // Validate that the mediable_id exists for the given type
-        $this->validateMediableExists($request->mediable_type, $request->mediable_id);
 
         $file = $request->file('file');
         $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('media', $fileName, 'public');
+        
+        // Handle folder organization
+        $folderName = $request->folder_name ?: 'general';
+        $folderPath = 'media/' . $folderName;
+        
+        // Store file in the specified folder
+        $filePath = $file->storeAs($folderPath, $fileName, 'public');
 
         // Determine file type
         $mimeType = $file->getMimeType();
         $fileType = str_starts_with($mimeType, 'image/') ? 'image' : 'video';
 
-        // Get the correct model class
-        $mediableClass = $this->getMediableClass($request->mediable_type);
-
         // Create media record
         $media = Media::create([
             'file_name' => $file->getClientOriginalName(),
             'file_path' => $filePath,
+            'folder_name' => $folderName,
+            'folder_path' => $folderPath,
             'file_type' => $fileType,
             'mime_type' => $mimeType,
             'file_size' => $file->getSize(),
             'alt_text' => $request->alt_text,
             'description' => $request->description,
-            'mediable_type' => $mediableClass,
-            'mediable_id' => $request->mediable_id,
         ]);
 
         return redirect()->route('admin.media.index')
@@ -123,33 +127,4 @@ class MediaController extends Controller
             ->with('success', 'Media deleted successfully!');
     }
 
-    /**
-     * Validate that the mediable entity exists
-     */
-    private function validateMediableExists(string $type, int $id): void
-    {
-        $model = match($type) {
-            'universe' => ParallelUniverse::find($id),
-            'event' => HistoricalEvent::find($id),
-            'news' => NewsBroadcast::find($id),
-            default => null
-        };
-
-        if (!$model) {
-            abort(422, "The selected {$type} does not exist.");
-        }
-    }
-
-    /**
-     * Get the full model class name for the mediable type
-     */
-    private function getMediableClass(string $type): string
-    {
-        return match($type) {
-            'universe' => ParallelUniverse::class,
-            'event' => HistoricalEvent::class,
-            'news' => NewsBroadcast::class,
-            default => throw new \InvalidArgumentException("Invalid mediable type: {$type}")
-        };
-    }
 }

@@ -22,7 +22,8 @@ class ParallelUniverseController extends Controller
      */
     public function create()
     {
-        return view('admin.universes.create');
+        $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+        return view('admin.universes.create', compact('mediaFiles'));
     }
 
     /**
@@ -35,12 +36,8 @@ class ParallelUniverseController extends Controller
             'divergence_point' => 'required|string|max:255',
             'divergence_year' => 'nullable|integer|min:1|max:' . (date('Y') + 1000),
             'description' => 'required|string',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_image_id' => 'nullable|exists:media,id',
         ]);
-
-        if ($request->hasFile('cover_image')) {
-            $validated['cover_image_path'] = $request->file('cover_image')->store('universes', 'public');
-        }
 
         ParallelUniverse::create($validated);
 
@@ -60,7 +57,8 @@ class ParallelUniverseController extends Controller
      */
     public function edit(ParallelUniverse $universe)
     {
-        return view('admin.universes.edit', compact('universe'));
+        $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+        return view('admin.universes.edit', compact('universe', 'mediaFiles'));
     }
 
     /**
@@ -73,16 +71,8 @@ class ParallelUniverseController extends Controller
             'divergence_point' => 'required|string|max:255',
             'divergence_year' => 'nullable|integer|min:1|max:' . (date('Y') + 1000),
             'description' => 'required|string',
-            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'cover_image_id' => 'nullable|exists:media,id',
         ]);
-
-        if ($request->hasFile('cover_image')) {
-            // Delete old image if exists
-            if ($universe->cover_image_path) {
-                \Storage::disk('public')->delete($universe->cover_image_path);
-            }
-            $validated['cover_image_path'] = $request->file('cover_image')->store('universes', 'public');
-        }
 
         $universe->update($validated);
 
@@ -94,11 +84,6 @@ class ParallelUniverseController extends Controller
      */
     public function destroy(ParallelUniverse $universe)
     {
-        // Delete image if exists
-        if ($universe->cover_image_path) {
-            \Storage::disk('public')->delete($universe->cover_image_path);
-        }
-
         $universe->delete();
 
         return redirect()->route('admin.universes.index')->with('success', 'Universe deleted successfully.');

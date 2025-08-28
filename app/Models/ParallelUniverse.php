@@ -11,7 +11,7 @@ class ParallelUniverse extends Model
         'divergence_point',
         'divergence_year',
         'description',
-        'cover_image_path',
+        'cover_image_id',
     ];
 
     public function historicalEvents()
@@ -24,18 +24,8 @@ class ParallelUniverse extends Model
         return $this->hasMany(NewsBroadcast::class);
     }
 
-    public function media()
+    public function coverImage()
     {
-        return $this->morphMany(Media::class, 'mediable');
-    }
-
-    public function images()
-    {
-        return $this->morphMany(Media::class, 'mediable')->where('file_type', 'image');
-    }
-
-    public function videos()
-    {
-        return $this->morphMany(Media::class, 'mediable')->where('file_type', 'video');
+        return $this->belongsTo(Media::class, 'cover_image_id');
     }
 }

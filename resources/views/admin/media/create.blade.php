@@ -58,30 +58,26 @@
                 </div>
             </div>
 
-            <!-- Connect to Entity -->
+            <!-- Folder Selection -->
             <div>
-                <label for="mediable_type" class="block text-sm font-medium text-gray-700 mb-2">
-                    Connect to <span class="text-red-500">*</span>
+                <label for="folder_name" class="block text-sm font-medium text-gray-700 mb-2">
+                    Folder
                 </label>
-                <select id="mediable_type" name="mediable_type" required 
-                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md text-gray-900"
-                        onchange="updateEntityOptions()">
-                    <option value="">Select entity type...</option>
-                    <option value="universe">Parallel Universe</option>
-                    <option value="event">Historical Event</option>
-                    <option value="news">News Broadcast</option>
-                </select>
-            </div>
-
-            <!-- Entity Selection -->
-            <div id="entity-selection" class="hidden">
-                <label for="mediable_id" class="block text-sm font-medium text-gray-700 mb-2">
-                    Select Entity <span class="text-red-500">*</span>
-                </label>
-                <select id="mediable_id" name="mediable_id" 
-                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md text-gray-900">
-                    <option value="">Select an entity...</option>
-                </select>
+                <div class="flex space-x-2">
+                    <select id="folder_select" 
+                            class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md text-gray-900"
+                            onchange="handleFolderSelection()">
+                        <option value="">Select existing folder...</option>
+                        @foreach($folders as $folder)
+                            <option value="{{ $folder }}">{{ $folder }}</option>
+                        @endforeach
+                        <option value="__new__">Create new folder...</option>
+                    </select>
+                </div>
+                <input type="text" id="folder_name" name="folder_name" 
+                       class="mt-2 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900 hidden"
+                       placeholder="Enter new folder name...">
+                <p class="mt-1 text-sm text-gray-500">Files will be organized in folders. Leave empty for 'general' folder.</p>
             </div>
 
             <!-- Alt Text -->
@@ -134,66 +130,19 @@
         }
     }
 
-    function updateEntityOptions() {
-        const typeSelect = document.getElementById('mediable_type');
-        const entitySelect = document.getElementById('mediable_id');
-        const entitySelection = document.getElementById('entity-selection');
+    function handleFolderSelection() {
+        const folderSelect = document.getElementById('folder_select');
+        const folderInput = document.getElementById('folder_name');
         
-        const selectedType = typeSelect.value;
-        
-        // Clear existing options
-        entitySelect.innerHTML = '<option value="">Select an entity...</option>';
-        
-        if (!selectedType) {
-            entitySelection.classList.add('hidden');
-            return;
-        }
-        
-        entitySelection.classList.remove('hidden');
-        
-        // Populate options based on selected type
-        let entities = [];
-        
-        if (selectedType === 'universe') {
-            entities = @json($universes);
-            entities.forEach(entity => {
-                const option = document.createElement('option');
-                option.value = entity.id;
-                option.textContent = entity.name;
-                entitySelect.appendChild(option);
-            });
-        } else if (selectedType === 'event') {
-            entities = @json($events);
-            entities.forEach(entity => {
-                const option = document.createElement('option');
-                option.value = entity.id;
-                option.textContent = entity.title + ' (' + entity.parallel_universe.name + ')';
-                entitySelect.appendChild(option);
-            });
-        } else if (selectedType === 'news') {
-            entities = @json($news);
-            entities.forEach(entity => {
-                const option = document.createElement('option');
-                option.value = entity.id;
-                option.textContent = entity.headline + ' (' + entity.parallel_universe.name + ')';
-                entitySelect.appendChild(option);
-            });
+        if (folderSelect.value === '__new__') {
+            folderInput.classList.remove('hidden');
+            folderInput.focus();
+            folderInput.value = '';
+        } else {
+            folderInput.classList.add('hidden');
+            folderInput.value = folderSelect.value;
         }
     }
 
-    // Maintain form state on validation errors
-    document.addEventListener('DOMContentLoaded', function() {
-        const typeSelect = document.getElementById('mediable_type');
-        if (typeSelect.value) {
-            updateEntityOptions();
-            // Restore selected entity if there was a validation error
-            const selectedEntityId = '{{ old('mediable_id') }}';
-            if (selectedEntityId) {
-                setTimeout(() => {
-                    document.getElementById('mediable_id').value = selectedEntityId;
-                }, 100);
-            }
-        }
-    });
     </script>
 </x-app-layout>

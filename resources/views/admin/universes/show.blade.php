@@ -124,41 +124,6 @@
                         @endif
                     </div>
 
-                    <!-- Media Files -->
-                    <div class="bg-gray-50 rounded-lg p-4">
-                        <h4 class="text-lg font-medium text-gray-900 mb-3 flex items-center">
-                            <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                            </svg>
-                            Media Files
-                        </h4>
-                        @if($universe->media->count() > 0)
-                            <div class="grid grid-cols-2 gap-2">
-                                @foreach($universe->media->take(4) as $media)
-                                    <div class="text-center">
-                                        @if($media->isImage())
-                                            <img src="{{ $media->url }}" alt="{{ $media->alt_text }}" 
-                                                 class="w-full h-16 object-cover rounded">
-                                        @else
-                                            <div class="w-full h-16 bg-gray-200 rounded flex items-center justify-center">
-                                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                                </svg>
-                                            </div>
-                                        @endif
-                                        <p class="text-xs text-gray-500 mt-1">{{ Str::limit($media->file_name, 15) }}</p>
-                                    </div>
-                                @endforeach
-                            </div>
-                            @if($universe->media->count() > 4)
-                                <p class="text-sm text-gray-500 mt-2">
-                                    ... and {{ $universe->media->count() - 4 }} more files
-                                </p>
-                            @endif
-                        @else
-                            <p class="text-sm text-gray-500">No media files yet</p>
-                        @endif
-                    </div>
                 </div>
             </div>
 

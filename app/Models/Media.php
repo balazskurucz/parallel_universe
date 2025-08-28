@@ -9,22 +9,14 @@ class Media extends Model
     protected $fillable = [
         'file_name',
         'file_path',
+        'folder_name',
+        'folder_path',
         'file_type',
         'mime_type',
         'file_size',
         'alt_text',
         'description',
-        'mediable_type',
-        'mediable_id',
     ];
-
-    /**
-     * Get the parent mediable model (ParallelUniverse, HistoricalEvent, or NewsBroadcast).
-     */
-    public function mediable()
-    {
-        return $this->morphTo();
-    }
 
     /**
      * Check if the media is an image.
