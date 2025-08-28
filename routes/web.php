@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\ParallelUniverseController;
 use App\Http\Controllers\Admin\HistoricalEventController;
 use App\Http\Controllers\Admin\NewsBroadcastController;
+use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\UniverseController;
 use App\Http\Controllers\NewsController;
 use Illuminate\Support\Facades\Route;
@@ -24,7 +25,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Admin routes
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
@@ -32,6 +33,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('universes', ParallelUniverseController::class);
     Route::resource('events', HistoricalEventController::class);
     Route::resource('news', NewsBroadcastController::class);
+    Route::resource('media', MediaController::class);
 });
 
 require __DIR__.'/auth.php';

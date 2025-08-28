@@ -9,7 +9,9 @@ class ParallelUniverse extends Model
     protected $fillable = [
         'name',
         'divergence_point',
+        'divergence_year',
         'description',
+        'cover_image_path',
     ];
 
     public function historicalEvents()

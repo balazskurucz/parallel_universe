@@ -33,6 +33,7 @@ class ParallelUniverseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'divergence_point' => 'required|string|max:255',
+            'divergence_year' => 'nullable|integer|min:1|max:' . (date('Y') + 1000),
             'description' => 'required|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -70,6 +71,7 @@ class ParallelUniverseController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'divergence_point' => 'required|string|max:255',
+            'divergence_year' => 'nullable|integer|min:1|max:' . (date('Y') + 1000),
             'description' => 'required|string',
             'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
