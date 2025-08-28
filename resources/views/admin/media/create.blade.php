@@ -64,7 +64,7 @@
                     Connect to <span class="text-red-500">*</span>
                 </label>
                 <select id="mediable_type" name="mediable_type" required 
-                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md text-gray-900"
                         onchange="updateEntityOptions()">
                     <option value="">Select entity type...</option>
                     <option value="universe">Parallel Universe</option>
@@ -79,7 +79,7 @@
                     Select Entity <span class="text-red-500">*</span>
                 </label>
                 <select id="mediable_id" name="mediable_id" 
-                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md text-gray-900">
                     <option value="">Select an entity...</option>
                 </select>
             </div>
@@ -90,7 +90,7 @@
                     Alt Text (for accessibility)
                 </label>
                 <input type="text" id="alt_text" name="alt_text" 
-                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                       class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900"
                        placeholder="Describe the image for screen readers...">
                 <p class="mt-1 text-sm text-gray-500">Recommended for images to improve accessibility</p>
             </div>
@@ -101,7 +101,7 @@
                     Description
                 </label>
                 <textarea id="description" name="description" rows="3"
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900"
                           placeholder="Optional description of the media file..."></textarea>
             </div>
 

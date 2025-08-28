@@ -50,23 +50,23 @@ class ParallelUniverseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ParallelUniverse $parallelUniverse)
+    public function show(ParallelUniverse $universe)
     {
-        return view('admin.universes.show', compact('parallelUniverse'));
+        return view('admin.universes.show', compact('universe'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ParallelUniverse $parallelUniverse)
+    public function edit(ParallelUniverse $universe)
     {
-        return view('admin.universes.edit', compact('parallelUniverse'));
+        return view('admin.universes.edit', compact('universe'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ParallelUniverse $parallelUniverse)
+    public function update(Request $request, ParallelUniverse $universe)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -78,13 +78,13 @@ class ParallelUniverseController extends Controller
 
         if ($request->hasFile('cover_image')) {
             // Delete old image if exists
-            if ($parallelUniverse->cover_image_path) {
-                \Storage::disk('public')->delete($parallelUniverse->cover_image_path);
+            if ($universe->cover_image_path) {
+                \Storage::disk('public')->delete($universe->cover_image_path);
             }
             $validated['cover_image_path'] = $request->file('cover_image')->store('universes', 'public');
         }
 
-        $parallelUniverse->update($validated);
+        $universe->update($validated);
 
         return redirect()->route('admin.universes.index')->with('success', 'Universe updated successfully.');
     }
@@ -92,14 +92,14 @@ class ParallelUniverseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ParallelUniverse $parallelUniverse)
+    public function destroy(ParallelUniverse $universe)
     {
         // Delete image if exists
-        if ($parallelUniverse->cover_image_path) {
-            \Storage::disk('public')->delete($parallelUniverse->cover_image_path);
+        if ($universe->cover_image_path) {
+            \Storage::disk('public')->delete($universe->cover_image_path);
         }
 
-        $parallelUniverse->delete();
+        $universe->delete();
 
         return redirect()->route('admin.universes.index')->with('success', 'Universe deleted successfully.');
     }
