@@ -40,7 +40,7 @@
                         Divergence Year
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Description
+                        Short Description
                     </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Actions
@@ -76,7 +76,7 @@
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <div class="text-sm text-gray-900">{{ Str::limit($universe->description, 100) }}</div>
+                            <div class="text-sm text-gray-900">{{ Str::limit($universe->short_description, 100) }}</div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                             <a href="{{ route('admin.universes.show', $universe) }}" 

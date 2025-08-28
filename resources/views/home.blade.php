@@ -16,7 +16,7 @@
                             @foreach($universes as $universe)
                                 <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                                     <h4 class="font-semibold text-lg mb-2">{{ $universe->name }}</h4>
-                                    <p class="text-gray-600 dark:text-gray-300 mb-3">{{ $universe->description }}</p>
+                                    <p class="text-gray-600 dark:text-gray-300 mb-3">{{ $universe->short_description }}</p>
                                     <a href="{{ route('universes.show', $universe) }}" 
                                        class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-md transition duration-150 ease-in-out">
                                         Explore Universe

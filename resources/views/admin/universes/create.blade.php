@@ -59,20 +59,30 @@
                     Divergence Year
                 </label>
                 <input type="number" id="divergence_year" name="divergence_year" value="{{ old('divergence_year') }}"
-                       min="1" max="{{ date('Y') + 1000 }}"
                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900"
                        placeholder="e.g., 1000">
                 <p class="mt-1 text-sm text-gray-500">The year when this universe diverged from our timeline (optional)</p>
             </div>
 
-            <!-- Description -->
+            <!-- Short Description -->
             <div>
-                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
-                    Description <span class="text-red-500">*</span>
+                <label for="short_description" class="block text-sm font-medium text-gray-700 mb-2">
+                    Short Description <span class="text-red-500">*</span>
                 </label>
-                <textarea id="description" name="description" rows="4" required
+                <textarea id="short_description" name="short_description" rows="3" required
                           class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900"
-                          placeholder="Describe this parallel universe, its key characteristics, and how it differs from our timeline...">{{ old('description') }}</textarea>
+                          placeholder="A brief summary of this universe...">{{ old('short_description') }}</textarea>
+                <p class="mt-1 text-sm text-gray-500">A brief summary of this universe for listings and previews</p>
+            </div>
+
+            <!-- Long Description -->
+            <div>
+                <label for="long_description" class="block text-sm font-medium text-gray-700 mb-2">
+                    Long Description <span class="text-red-500">*</span>
+                </label>
+                <textarea id="long_description" name="long_description" rows="6" required
+                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900"
+                          placeholder="Describe this parallel universe, its key characteristics, and how it differs from our timeline...">{{ old('long_description') }}</textarea>
                 <p class="mt-1 text-sm text-gray-500">A detailed description of this universe and its unique features</p>
             </div>
 

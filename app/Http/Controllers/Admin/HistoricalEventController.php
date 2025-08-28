@@ -36,7 +36,7 @@ class HistoricalEventController extends Controller
         $validated = $request->validate([
             'parallel_universe_id' => 'required|exists:parallel_universes,id',
             'title' => 'required|string|max:255',
-            'event_year' => 'required|integer|min:1|max:9999',
+            'event_year' => 'required|integer',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'cover_image_id' => 'nullable|exists:media,id',
@@ -73,7 +73,7 @@ class HistoricalEventController extends Controller
         $validated = $request->validate([
             'parallel_universe_id' => 'required|exists:parallel_universes,id',
             'title' => 'required|string|max:255',
-            'event_year' => 'required|integer|min:1|max:9999',
+            'event_year' => 'required|integer',
             'short_description' => 'required|string',
             'long_description' => 'required|string',
             'cover_image_id' => 'nullable|exists:media,id',

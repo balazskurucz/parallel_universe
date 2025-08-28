@@ -10,7 +10,8 @@ class ParallelUniverse extends Model
         'name',
         'divergence_point',
         'divergence_year',
-        'description',
+        'short_description',
+        'long_description',
         'cover_image_id',
     ];
 

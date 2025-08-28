@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Event Details: ') . $historicalEvent->title }}
+            {{ __('Event Details: ') . ($historicalEvent ? $historicalEvent->title : 'Unknown Event') }}
         </h2>
     </x-slot>
 
@@ -12,10 +12,14 @@
                     <div class="flex justify-between items-center mb-6">
                         <div></div>
                         <div class="space-x-3">
-                            <a href="{{ route('admin.events.edit', $historicalEvent) }}" 
-                               class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                Edit Event
-                            </a>
+                            @if($historicalEvent)
+                                <a href="{{ route('admin.events.edit', $historicalEvent) }}" 
+                                   class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Edit Event
+                                </a>
+                            @else
+                                <span class="text-red-500">Error: Event not found</span>
+                            @endif
                             <a href="{{ route('admin.events.index') }}" 
                                class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                                 Back to List
@@ -29,6 +33,7 @@
         </div>
     @endif
 
+    @if($historicalEvent)
     <div class="bg-white shadow-md rounded-lg overflow-hidden">
         <!-- Event Image -->
         @if($historicalEvent->image_path)
@@ -153,6 +158,18 @@
             </div>
         </div>
     </div>
+    @else
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <h3 class="font-bold">Event Not Found</h3>
+        <p>The requested historical event could not be found or does not exist.</p>
+        <div class="mt-4">
+            <a href="{{ route('admin.events.index') }}" 
+               class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Back to Events List
+            </a>
+        </div>
+    </div>
+    @endif
                 </div>
             </div>
         </div>

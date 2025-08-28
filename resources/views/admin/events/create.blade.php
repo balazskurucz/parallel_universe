@@ -65,7 +65,6 @@
                     Event Year <span class="text-red-500">*</span>
                 </label>
                 <input type="number" id="event_year" name="event_year" value="{{ old('event_year') }}" required
-                       min="1" max="9999"
                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900"
                        placeholder="e.g., 1003">
                 <p class="mt-1 text-sm text-gray-500">The year when this event occurred</p>

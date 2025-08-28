@@ -58,8 +58,13 @@
                 </div>
 
                 <div class="md:col-span-2">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Description</h3>
-                    <div class="text-gray-700 whitespace-pre-wrap">{{ $universe->description }}</div>
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Short Description</h3>
+                    <div class="text-gray-700 whitespace-pre-wrap">{{ $universe->short_description }}</div>
+                </div>
+
+                <div class="md:col-span-2">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-2">Long Description</h3>
+                    <div class="text-gray-700 whitespace-pre-wrap">{{ $universe->long_description }}</div>
                 </div>
             </div>
 
