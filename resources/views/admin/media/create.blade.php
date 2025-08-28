@@ -1,14 +1,21 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Upload New Media') }}
+        </h2>
+    </x-slot>
 
-@section('content')
-<div class="container mx-auto px-4 py-8">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-3xl font-bold text-gray-900">Upload New Media</h1>
-        <a href="{{ route('admin.media.index') }}" 
-           class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-            Back to Media List
-        </a>
-    </div>
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <div></div>
+                        <a href="{{ route('admin.media.index') }}" 
+                           class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                            Back to Media List
+                        </a>
+                    </div>
 
     @if($errors->any())
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -110,80 +117,83 @@
                 </button>
             </div>
         </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-function displayFileName(input) {
-    const fileNameElement = document.getElementById('file-name');
-    if (input.files && input.files[0]) {
-        fileNameElement.textContent = 'Selected: ' + input.files[0].name;
-        fileNameElement.classList.remove('hidden');
-    } else {
-        fileNameElement.classList.add('hidden');
-    }
-}
-
-function updateEntityOptions() {
-    const typeSelect = document.getElementById('mediable_type');
-    const entitySelect = document.getElementById('mediable_id');
-    const entitySelection = document.getElementById('entity-selection');
-    
-    const selectedType = typeSelect.value;
-    
-    // Clear existing options
-    entitySelect.innerHTML = '<option value="">Select an entity...</option>';
-    
-    if (!selectedType) {
-        entitySelection.classList.add('hidden');
-        return;
-    }
-    
-    entitySelection.classList.remove('hidden');
-    
-    // Populate options based on selected type
-    let entities = [];
-    
-    if (selectedType === 'universe') {
-        entities = @json($universes);
-        entities.forEach(entity => {
-            const option = document.createElement('option');
-            option.value = entity.id;
-            option.textContent = entity.name;
-            entitySelect.appendChild(option);
-        });
-    } else if (selectedType === 'event') {
-        entities = @json($events);
-        entities.forEach(entity => {
-            const option = document.createElement('option');
-            option.value = entity.id;
-            option.textContent = entity.title + ' (' + entity.parallel_universe.name + ')';
-            entitySelect.appendChild(option);
-        });
-    } else if (selectedType === 'news') {
-        entities = @json($news);
-        entities.forEach(entity => {
-            const option = document.createElement('option');
-            option.value = entity.id;
-            option.textContent = entity.headline + ' (' + entity.parallel_universe.name + ')';
-            entitySelect.appendChild(option);
-        });
-    }
-}
-
-// Maintain form state on validation errors
-document.addEventListener('DOMContentLoaded', function() {
-    const typeSelect = document.getElementById('mediable_type');
-    if (typeSelect.value) {
-        updateEntityOptions();
-        // Restore selected entity if there was a validation error
-        const selectedEntityId = '{{ old('mediable_id') }}';
-        if (selectedEntityId) {
-            setTimeout(() => {
-                document.getElementById('mediable_id').value = selectedEntityId;
-            }, 100);
+    <script>
+    function displayFileName(input) {
+        const fileNameElement = document.getElementById('file-name');
+        if (input.files && input.files[0]) {
+            fileNameElement.textContent = 'Selected: ' + input.files[0].name;
+            fileNameElement.classList.remove('hidden');
+        } else {
+            fileNameElement.classList.add('hidden');
         }
     }
-});
-</script>
-@endsection
+
+    function updateEntityOptions() {
+        const typeSelect = document.getElementById('mediable_type');
+        const entitySelect = document.getElementById('mediable_id');
+        const entitySelection = document.getElementById('entity-selection');
+        
+        const selectedType = typeSelect.value;
+        
+        // Clear existing options
+        entitySelect.innerHTML = '<option value="">Select an entity...</option>';
+        
+        if (!selectedType) {
+            entitySelection.classList.add('hidden');
+            return;
+        }
+        
+        entitySelection.classList.remove('hidden');
+        
+        // Populate options based on selected type
+        let entities = [];
+        
+        if (selectedType === 'universe') {
+            entities = @json($universes);
+            entities.forEach(entity => {
+                const option = document.createElement('option');
+                option.value = entity.id;
+                option.textContent = entity.name;
+                entitySelect.appendChild(option);
+            });
+        } else if (selectedType === 'event') {
+            entities = @json($events);
+            entities.forEach(entity => {
+                const option = document.createElement('option');
+                option.value = entity.id;
+                option.textContent = entity.title + ' (' + entity.parallel_universe.name + ')';
+                entitySelect.appendChild(option);
+            });
+        } else if (selectedType === 'news') {
+            entities = @json($news);
+            entities.forEach(entity => {
+                const option = document.createElement('option');
+                option.value = entity.id;
+                option.textContent = entity.headline + ' (' + entity.parallel_universe.name + ')';
+                entitySelect.appendChild(option);
+            });
+        }
+    }
+
+    // Maintain form state on validation errors
+    document.addEventListener('DOMContentLoaded', function() {
+        const typeSelect = document.getElementById('mediable_type');
+        if (typeSelect.value) {
+            updateEntityOptions();
+            // Restore selected entity if there was a validation error
+            const selectedEntityId = '{{ old('mediable_id') }}';
+            if (selectedEntityId) {
+                setTimeout(() => {
+                    document.getElementById('mediable_id').value = selectedEntityId;
+                }, 100);
+            }
+        }
+    });
+    </script>
+</x-app-layout>

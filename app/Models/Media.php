@@ -14,6 +14,8 @@ class Media extends Model
         'file_size',
         'alt_text',
         'description',
+        'mediable_type',
+        'mediable_id',
     ];
 
     /**
