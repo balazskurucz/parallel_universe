@@ -13,7 +13,7 @@ class ParallelUniverseController extends Controller
      */
     public function index()
     {
-        $universes = ParallelUniverse::all();
+        $universes = ParallelUniverse::with('coverImage')->get();
         return view('admin.universes.index', compact('universes'));
     }
 

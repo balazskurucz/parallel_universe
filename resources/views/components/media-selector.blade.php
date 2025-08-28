@@ -34,13 +34,42 @@
     @else
         <input type="hidden" name="{{ $name }}" id="{{ $name }}" value="{{ $value }}">
 
-        <div class="space-y-6">
-            @php
-                $groupedMedia = $mediaFiles->groupBy('folder_name');
-            @endphp
+        @php
+            $groupedMedia = $mediaFiles->groupBy('folder_name');
+            $folderNames = $groupedMedia->keys()->sort();
+            
+            // Find folder containing selected image, or default to root folder
+            $defaultFolder = $folderNames->first(fn($folder) => empty($folder)) ?? $folderNames->first();
+            if ($value) {
+                $selectedMedia = $mediaFiles->firstWhere('id', $value);
+                if ($selectedMedia) {
+                    $defaultFolder = $selectedMedia->folder_name;
+                }
+            }
+        @endphp
 
+        {{-- Folder Selector --}}
+        @if($groupedMedia->count() > 1)
+            <div class="mb-4">
+                <label for="folder-selector" class="block text-sm font-medium text-gray-700 mb-2">
+                    Select Folder
+                </label>
+                <select id="folder-selector" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black">
+                    @foreach($folderNames as $folderName)
+                        <option value="{{ $folderName }}" {{ $folderName === $defaultFolder ? 'selected' : '' }}>
+                            {{ $folderName ?: 'Root Folder' }}
+                            ({{ $groupedMedia[$folderName]->count() }} files)
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+
+        {{-- Media Display Area --}}
+        <div id="media-display-area">
             @foreach($groupedMedia as $folderName => $folderMedia)
-                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                <div class="folder-content border border-gray-200 rounded-lg overflow-hidden {{ $folderName === $defaultFolder ? '' : 'hidden' }}" 
+                     data-folder="{{ $folderName }}">
                     <div class="bg-gray-50 px-4 py-3 border-b border-gray-200">
                         <h3 class="text-sm font-medium text-gray-900 flex items-center">
                             <svg class="w-4 h-4 mr-2 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -116,10 +145,106 @@
     @endif
 </div>
 
-{{-- The script and style tags remain unchanged --}}
 <script>
-    // ...
+document.addEventListener('DOMContentLoaded', function() {
+    const folderSelector = document.getElementById('folder-selector');
+    const mediaItems = document.querySelectorAll('.media-item');
+    const hiddenInput = document.getElementById('{{ $name }}');
+    const selectedMediaInfo = document.getElementById('selected-media-info');
+    const selectedMediaName = document.getElementById('selected-media-name');
+    const clearSelectionBtn = document.getElementById('clear-selection');
+
+    // Folder switching functionality
+    if (folderSelector) {
+        folderSelector.addEventListener('change', function() {
+            const selectedFolder = this.value;
+            const folderContents = document.querySelectorAll('.folder-content');
+            
+            // Hide all folder contents
+            folderContents.forEach(content => {
+                content.classList.add('hidden');
+            });
+            
+            // Show selected folder content
+            const targetFolder = document.querySelector(`[data-folder="${selectedFolder}"]`);
+            if (targetFolder) {
+                targetFolder.classList.remove('hidden');
+            }
+        });
+    }
+
+    // Media selection functionality
+    mediaItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const mediaId = this.dataset.mediaId;
+            const mediaName = this.dataset.mediaName;
+
+            // Remove selection from all items
+            mediaItems.forEach(otherItem => {
+                const overlay = otherItem.querySelector('.media-overlay');
+                const check = otherItem.querySelector('.media-check');
+                overlay.classList.remove('bg-opacity-75');
+                check.classList.remove('opacity-100');
+                otherItem.classList.remove('ring-2', 'ring-indigo-500');
+            });
+
+            // Add selection to clicked item
+            const overlay = this.querySelector('.media-overlay');
+            const check = this.querySelector('.media-check');
+            overlay.classList.add('bg-opacity-75');
+            check.classList.add('opacity-100');
+            this.classList.add('ring-2', 'ring-indigo-500');
+
+            // Update hidden input and info display
+            hiddenInput.value = mediaId;
+            selectedMediaName.textContent = mediaName;
+            selectedMediaInfo.classList.remove('hidden');
+        });
+    });
+
+    // Clear selection functionality
+    if (clearSelectionBtn) {
+        clearSelectionBtn.addEventListener('click', function() {
+            // Remove selection from all items
+            mediaItems.forEach(item => {
+                const overlay = item.querySelector('.media-overlay');
+                const check = item.querySelector('.media-check');
+                overlay.classList.remove('bg-opacity-75');
+                check.classList.remove('opacity-100');
+                item.classList.remove('ring-2', 'ring-indigo-500');
+            });
+
+            // Clear hidden input and hide info
+            hiddenInput.value = '';
+            selectedMediaInfo.classList.add('hidden');
+        });
+    }
+
+    // Set initial selection if value exists
+    const initialValue = hiddenInput.value;
+    if (initialValue) {
+        const selectedItem = document.querySelector(`[data-media-id="${initialValue}"]`);
+        if (selectedItem) {
+            selectedItem.click();
+        }
+    }
+});
 </script>
+
 <style>
-    // ...
+.media-item:hover .media-overlay {
+    background-color: rgba(79, 70, 229, 0.1);
+}
+
+.media-item.ring-2 {
+    transform: scale(0.98);
+}
+
+.folder-content {
+    transition: opacity 0.2s ease-in-out;
+}
+
+.folder-content.hidden {
+    display: none;
+}
 </style>

@@ -51,8 +51,8 @@
                 @forelse($universes as $universe)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($universe->cover_image_path)
-                                <img src="{{ asset('storage/' . $universe->cover_image_path) }}" 
+                            @if($universe->coverImage)
+                                <img src="{{ $universe->coverImage->url }}" 
                                      alt="{{ $universe->name }}" 
                                      class="h-16 w-16 object-cover rounded">
                             @else

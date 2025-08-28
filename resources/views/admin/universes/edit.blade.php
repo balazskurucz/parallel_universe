@@ -133,29 +133,30 @@
             </div>
 
             <!-- Submit Button -->
-            <div class="flex justify-between items-center">
-                <form action="{{ route('admin.universes.destroy', $universe) }}" method="POST" class="inline">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" 
-                            class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                            onclick="return confirm('Are you sure you want to delete this universe? This action cannot be undone and will also delete all related events, news, and media.')">
-                        Delete Universe
-                    </button>
-                </form>
-
-                <div class="flex space-x-3">
-                    <a href="{{ route('admin.universes.show', $universe) }}" 
-                       class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
-                        Cancel
-                    </a>
-                    <button type="submit" 
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        Update Universe
-                    </button>
-                </div>
+            <div class="flex justify-end space-x-3">
+                <a href="{{ route('admin.universes.show', $universe) }}" 
+                   class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
+                    Cancel
+                </a>
+                <button type="submit" 
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Update Universe
+                </button>
             </div>
         </form>
+
+        <!-- Delete Form (separate from update form) -->
+        <div class="mt-6 pt-6 border-t border-gray-200">
+            <form action="{{ route('admin.universes.destroy', $universe) }}" method="POST" class="inline">
+                @csrf
+                @method('DELETE')
+                <button type="submit" 
+                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                        onclick="return confirm('Are you sure you want to delete this universe? This action cannot be undone and will also delete all related events, news, and media.')">
+                    Delete Universe
+                </button>
+            </form>
+        </div>
                     </div>
                 </div>
             </div>
