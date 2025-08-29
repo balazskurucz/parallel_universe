@@ -14,7 +14,8 @@ class NewsBroadcastController extends Controller
      */
     public function index()
     {
-        $news = NewsBroadcast::with('parallelUniverse')->get();
+        $news = NewsBroadcast::with('parallelUniverse', 'coverImage')->get();
+
         return view('admin.news.index', compact('news'));
     }
 
@@ -25,6 +26,7 @@ class NewsBroadcastController extends Controller
     {
         $universes = ParallelUniverse::all();
         $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+
         return view('admin.news.create', compact('universes', 'mediaFiles'));
     }
 
@@ -62,6 +64,7 @@ class NewsBroadcastController extends Controller
     {
         $universes = ParallelUniverse::all();
         $mediaFiles = \App\Models\Media::where('file_type', 'image')->orderBy('created_at', 'desc')->get();
+
         return view('admin.news.edit', compact('newsBroadcast', 'universes', 'mediaFiles'));
     }
 

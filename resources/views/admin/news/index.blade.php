@@ -51,9 +51,9 @@
                 @forelse($news as $newsItem)
                     <tr>
                         <td class="px-6 py-4 whitespace-nowrap">
-                            @if($newsItem->image_path)
-                                <img src="{{ asset('storage/' . $newsItem->image_path) }}" 
-                                     alt="{{ $newsItem->headline }}" 
+                            @if($newsItem->coverImage)
+                                <img src="{{ $newsItem->coverImage->url }}" 
+                                     alt="{{ $newsItem->coverImage->alt_text ?? $newsItem->headline }}" 
                                      class="h-16 w-16 object-cover rounded">
                             @else
                                 <div class="h-16 w-16 bg-gray-200 rounded flex items-center justify-center">
