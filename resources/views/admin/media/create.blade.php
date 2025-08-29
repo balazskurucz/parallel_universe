@@ -43,9 +43,9 @@
                         </svg>
                         <div class="flex text-sm text-gray-600">
                             <label for="file" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                                <span>Upload a file</span>
-                                <input id="file" name="file" type="file" class="sr-only" required 
-                                       accept="image/*,video/*" onchange="displayFileName(this)">
+                                <span>Upload files</span>
+                                <input id="file" name="files[]" type="file" class="sr-only" required 
+                                       accept="image/*,video/*" multiple onchange="displayFileNames(this)">
                             </label>
                             <p class="pl-1">or drag and drop</p>
                         </div>
@@ -120,10 +120,14 @@
     </div>
 
     <script>
-    function displayFileName(input) {
+    function displayFileNames(input) {
         const fileNameElement = document.getElementById('file-name');
-        if (input.files && input.files[0]) {
-            fileNameElement.textContent = 'Selected: ' + input.files[0].name;
+        if (input.files && input.files.length > 0) {
+            if (input.files.length === 1) {
+                fileNameElement.textContent = 'Selected: ' + input.files[0].name;
+            } else {
+                fileNameElement.textContent = 'Selected: ' + input.files.length + ' files';
+            }
             fileNameElement.classList.remove('hidden');
         } else {
             fileNameElement.classList.add('hidden');

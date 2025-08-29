@@ -47,41 +47,51 @@ class MediaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,wmv|max:51200', // 50MB max
+            'files' => 'required|array|min:1',
+            'files.*' => 'required|file|mimes:jpeg,png,jpg,gif,svg,mp4,avi,mov,wmv|max:51200', // 50MB max per file
             'alt_text' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
             'folder_name' => 'nullable|string|max:255',
         ]);
 
-        $file = $request->file('file');
-        $fileName = time() . '_' . $file->getClientOriginalName();
+        $uploadedFiles = [];
+        $files = $request->file('files');
         
         // Handle folder organization
         $folderName = $request->folder_name ?: 'general';
         $folderPath = 'media/' . $folderName;
-        
-        // Store file in the specified folder
-        $filePath = $file->storeAs($folderPath, $fileName, 'public');
 
-        // Determine file type
-        $mimeType = $file->getMimeType();
-        $fileType = str_starts_with($mimeType, 'image/') ? 'image' : 'video';
+        foreach ($files as $file) {
+            $fileName = time() . '_' . uniqid() . '_' . $file->getClientOriginalName();
+            
+            // Store file in the specified folder
+            $filePath = $file->storeAs($folderPath, $fileName, 'public');
 
-        // Create media record
-        $media = Media::create([
-            'file_name' => $file->getClientOriginalName(),
-            'file_path' => $filePath,
-            'folder_name' => $folderName,
-            'folder_path' => $folderPath,
-            'file_type' => $fileType,
-            'mime_type' => $mimeType,
-            'file_size' => $file->getSize(),
-            'alt_text' => $request->alt_text,
-            'description' => $request->description,
-        ]);
+            // Determine file type
+            $mimeType = $file->getMimeType();
+            $fileType = str_starts_with($mimeType, 'image/') ? 'image' : 'video';
+
+            // Create media record
+            $media = Media::create([
+                'file_name' => $file->getClientOriginalName(),
+                'file_path' => $filePath,
+                'folder_name' => $folderName,
+                'folder_path' => $folderPath,
+                'file_type' => $fileType,
+                'mime_type' => $mimeType,
+                'file_size' => $file->getSize(),
+                'alt_text' => $request->alt_text,
+                'description' => $request->description,
+            ]);
+
+            $uploadedFiles[] = $media;
+        }
+
+        $fileCount = count($uploadedFiles);
+        $message = $fileCount === 1 ? 'Media uploaded successfully!' : "{$fileCount} media files uploaded successfully!";
 
         return redirect()->route('admin.media.index')
-            ->with('success', 'Media uploaded successfully!');
+            ->with('success', $message);
     }
 
     /**
