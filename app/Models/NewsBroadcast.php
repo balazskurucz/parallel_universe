@@ -17,6 +17,13 @@ class NewsBroadcast extends Model
         'cover_image_id',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'broadcast_date' => 'datetime',
+        ];
+    }
+
     protected static function boot(): void
     {
         parent::boot();

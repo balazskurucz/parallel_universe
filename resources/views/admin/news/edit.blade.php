@@ -85,12 +85,12 @@
             <!-- Broadcast Date -->
             <div>
                 <label for="broadcast_date" class="block text-sm font-medium text-gray-700 mb-2">
-                    Broadcast Date <span class="text-red-500">*</span>
+                    Broadcast Date & Time <span class="text-red-500">*</span>
                 </label>
-                <input type="date" id="broadcast_date" name="broadcast_date" 
-                       value="{{ old('broadcast_date', $newsBroadcast->broadcast_date ? \Carbon\Carbon::parse($newsBroadcast->broadcast_date)->format('Y-m-d') : '') }}" required
+                <input type="datetime-local" id="broadcast_date" name="broadcast_date" 
+                       value="{{ old('broadcast_date', $newsBroadcast->broadcast_date ? \Carbon\Carbon::parse($newsBroadcast->broadcast_date)->format('Y-m-d\TH:i') : '') }}" required
                        class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900">
-                <p class="mt-1 text-sm text-gray-500">The date when this news was broadcast</p>
+                <p class="mt-1 text-sm text-gray-500">The date and time when this news was broadcast</p>
             </div>
 
             <!-- Short Description -->
