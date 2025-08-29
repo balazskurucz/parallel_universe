@@ -105,6 +105,19 @@ class MediaController extends Controller
     }
 
     /**
+     * Get media items for WYSIWYG editor (API endpoint).
+     */
+    public function api(): \Illuminate\Http\JsonResponse
+    {
+        $media = Media::where('file_type', 'image')
+            ->orderBy('folder_name', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->get(['id', 'file_name', 'alt_text', 'folder_name']);
+
+        return response()->json($media);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)

@@ -36,6 +36,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('events/mass-upload', [HistoricalEventController::class, 'massUploadProcess'])->name('events.mass-upload.process');
     Route::resource('events', HistoricalEventController::class);
     Route::resource('news', NewsBroadcastController::class);
+    Route::get('media/api', [MediaController::class, 'api'])->name('media.api');
     Route::resource('media', MediaController::class);
 });
 
