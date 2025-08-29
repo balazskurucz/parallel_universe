@@ -6,7 +6,6 @@ use App\Models\NewsBroadcast;
 use App\Models\ParallelUniverse;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
@@ -44,6 +43,19 @@ class NewsBroadcastTest extends TestCase
         $response->assertSee($universe->name);
     }
 
+    public function test_news_create_page_contains_wysiwyg_editor()
+    {
+        $user = User::factory()->create();
+        ParallelUniverse::factory()->create();
+
+        $response = $this->actingAs($user)->get(route('admin.news.create'));
+
+        $response->assertStatus(200);
+        $response->assertSee('x-data="wysiwyg', false);
+        $response->assertSee('x-ref="editor"', false);
+        $response->assertSee('name="long_description"', false);
+    }
+
     public function test_authenticated_admin_can_create_news_broadcast()
     {
         $user = User::factory()->create();
@@ -71,7 +83,7 @@ class NewsBroadcastTest extends TestCase
             'long_description' => 'Test long description',
             'video_url' => 'https://example.com/video',
         ]);
-        Storage::disk('public')->assertExists('news/' . $file->hashName());
+        Storage::disk('public')->assertExists('news/'.$file->hashName());
     }
 
     public function test_authenticated_admin_can_view_single_news()

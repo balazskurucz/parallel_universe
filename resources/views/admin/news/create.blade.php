@@ -81,15 +81,12 @@
             </div>
 
             <!-- Long Description -->
-            <div>
-                <label for="long_description" class="block text-sm font-medium text-gray-700 mb-2">
-                    Long Description <span class="text-red-500">*</span>
-                </label>
-                <textarea id="long_description" name="long_description" rows="6" required
-                          class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md text-gray-900"
-                          placeholder="Provide the full news story with all details, quotes, and context...">{{ old('long_description') }}</textarea>
-                <p class="mt-1 text-sm text-gray-500">The complete news story with all details</p>
-            </div>
+            <x-wysiwyg-editor 
+                name="long_description"
+                label="Long Description"
+                :value="old('long_description')"
+                :required="true"
+                help-text="The complete news story with all details" />
 
             <!-- Cover Image Selection -->
             <x-media-selector 
