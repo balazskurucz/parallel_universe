@@ -112,7 +112,7 @@ class MediaController extends Controller
         $media = Media::where('file_type', 'image')
             ->orderBy('folder_name', 'asc')
             ->orderBy('created_at', 'desc')
-            ->get(['id', 'file_name', 'alt_text', 'folder_name']);
+            ->get(['id', 'file_name', 'alt_text', 'folder_name', 'file_path']);
 
         return response()->json($media);
     }
@@ -150,6 +150,29 @@ class MediaController extends Controller
 
         return redirect()->route('admin.media.index')
             ->with('success', 'Media deleted successfully!');
+    }
+
+    /**
+     * Serve a media file in full size (original dimensions).
+     */
+    public function serveFull(string $id): BinaryFileResponse
+    {
+        $media = Media::findOrFail($id);
+
+        // Check if file exists
+        if (! Storage::disk('public')->exists($media->file_path)) {
+            abort(404, 'Media file not found');
+        }
+
+        // Get the file path
+        $filePath = Storage::disk('public')->path($media->file_path);
+
+        // Serve the original file directly
+        return response()->file($filePath, [
+            'Content-Type' => $media->mime_type,
+            'Cache-Control' => 'public, max-age=31536000', // Cache for 1 year
+            'Expires' => gmdate('D, d M Y H:i:s', time() + 31536000).' GMT',
+        ]);
     }
 
     /**

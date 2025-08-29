@@ -73,7 +73,7 @@ Alpine.data('wysiwyg', (initialValue = '') => ({
     },
 
     insertImage(mediaItem) {
-        const imageUrl = `/media/${mediaItem.id}/400x300`;
+        const imageUrl = `/media/${mediaItem.id}`;
         
         // Close modal first
         this.showMediaModal = false;
@@ -132,7 +132,8 @@ Alpine.data('wysiwyg', (initialValue = '') => ({
                     // Simple fallback: just append to the end
                     try {
                         const content = this.editor.root.innerHTML;
-                        this.editor.root.innerHTML = content + `<img src="${imageUrl}" alt="${mediaItem.alt_text || ''}" />`;
+                        const image = `<img src="${imageUrl}" alt="${mediaItem.alt_text || ''}" />`;
+                        this.editor.root.innerHTML = content + image;
                         this.content = this.editor.root.innerHTML;
                         this.$refs.hiddenInput.value = this.content;
                     } catch (fallbackError) {

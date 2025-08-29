@@ -8,6 +8,17 @@
         </label>
     @endif
     
+    <style>
+        /* Style images in the WYSIWYG editor to display at 400x300 max size */
+        .ql-editor img {
+            max-width: 400px !important;
+            max-height: 300px !important;
+            width: auto !important;
+            height: auto !important;
+            object-fit: contain;
+        }
+    </style>
+    
     <div x-data="wysiwyg('{{ old($name, $value) }}')" class="space-y-2">
         <!-- Quill Editor Container -->
         <div x-ref="editor" 

@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [UniverseController::class, 'index'])->name('home');
 Route::get('/universes/{universe}', [UniverseController::class, 'show'])->name('universes.show');
 Route::get('/news/{news}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/media/{id}', [MediaController::class, 'serveFull'])->name('media.serve.full');
 Route::get('/media/{id}/{dimensions}', [MediaController::class, 'serve'])->name('media.serve');
 
 Route::get('/dashboard', function () {
