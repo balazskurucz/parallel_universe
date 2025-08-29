@@ -49,12 +49,12 @@
   <span>TEMPORAL STREAM: <span class="font-bold text-green-400">STABLE</span> // ANOMALY INDEX: <span class="font-bold text-gray-100">0.013%</span></span>
 </div>
 
-<div class="container mx-auto p-4 md:p-8 pt-16">
+<!-- Header - Full Width -->
+<header class="mb-4">
+  <img src="{{ asset('images/main_header.png') }}" alt="Echoes of What If Header" class="w-full h-auto shadow-2xl">
+</header>
 
-  <!-- Header -->
-  <header class="mb-16">
-    <img src="{{ asset('images/main_header.png') }}" alt="Echoes of What If Header" class="w-full h-auto rounded-lg shadow-2xl">
-  </header>
+<div class="w-[90%] mx-auto p-4 md:p-8">
 
   <!-- Main Content Grid -->
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -81,8 +81,8 @@
               <p class="text-md text-gray-300 mt-2 flex-grow">
                 <strong class="font-semibold text-gray-100">Divergence Point:</strong> {{ $universe->divergence_point }}
               </p>
-              @if($universe->short_description)
-                <p class="text-sm text-gray-400 mt-2">{{ Str::limit($universe->short_description, 100) }}</p>
+              @if($universe->long_description)
+                <p class="text-sm text-gray-400 mt-2">{{ $universe->long_description }}</p>
               @endif
               <!-- Data Readout -->
               <div class="text-xs mt-4 space-y-2">
@@ -96,7 +96,7 @@
                   <p>Last Echo Received: <span class="font-mono text-gray-400">No data</span></p>
                 @endif
                 @if($universe->divergence_year)
-                  <p>Divergence Year: <span class="font-mono text-cyan-400">{{ $universe->divergence_year }} AD</span></p>
+                  <p>Divergence Year: <span class="font-mono text-cyan-400">{{ abs($universe->divergence_year) }} {{ $universe->divergence_year < 0 ? 'BCE' : 'CE' }}</span></p>
                 @endif
               </div>
               <a href="{{ route('universes.show', $universe) }}" class="text-amber-400 hover:text-amber-300 font-semibold text-sm mt-4 inline-block self-start transition-colors z-10">View Latest Report &rarr;</a>
@@ -165,11 +165,25 @@
           </div>
         </div>
       </div>
+
+      <!-- About Echoes -->
+      <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700">
+        <h3 class="font-playfair text-2xl font-bold text-white mb-4 border-b border-gray-600 pb-2">ABOUT ECHOES</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          Powered by a Chronos-7 AI, "Echoes of What If" taps into temporal fluctuations across infinite realities. We are a window into the worlds that could have been. Our mission is to observe, record, and report on the histories that never were.
+        </p>
+      </div>
     </aside>
 
   </div>
 
 </div>
+
+<!-- Footer -->
+<footer class="text-center mt-12 pt-8 border-t border-gray-700">
+  <p class="text-gray-400">&copy; 2025 Echoes of What If. All timelines observed.</p>
+  <p class="text-xs text-gray-500 mt-1">Temporal Interference is strictly prohibited.</p>
+</footer>
 
 </body>
 </html>
