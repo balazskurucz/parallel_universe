@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ParallelUniverse;
 use App\Models\NewsBroadcast;
-use Illuminate\Http\Request;
+use App\Models\ParallelUniverse;
 
 class UniverseController extends Controller
 {
@@ -13,12 +12,15 @@ class UniverseController extends Controller
      */
     public function index()
     {
-        $universes = ParallelUniverse::with(['newsBroadcasts' => function ($query) {
-            $query->orderBy('broadcast_date', 'desc');
+        $universes = ParallelUniverse::with(['coverImage', 'newsBroadcasts' => function ($query) {
+            $query->orderBy('broadcast_date', 'desc')->limit(1);
         }])->get();
-        
-        $latestNews = NewsBroadcast::orderBy('broadcast_date', 'desc')->first();
-        
+
+        $latestNews = NewsBroadcast::with(['parallelUniverse', 'coverImage'])
+            ->orderBy('broadcast_date', 'desc')
+            ->limit(5)
+            ->get();
+
         return view('home', compact('universes', 'latestNews'));
     }
 
@@ -27,12 +29,12 @@ class UniverseController extends Controller
      */
     public function show(ParallelUniverse $universe)
     {
-        $universe->load(['historicalEvents' => function($query) {
+        $universe->load(['historicalEvents' => function ($query) {
             $query->orderBy('event_year');
-        }, 'newsBroadcasts' => function($query) {
+        }, 'newsBroadcasts' => function ($query) {
             $query->orderBy('broadcast_date', 'desc');
         }]);
-        
+
         return view('universes.show', compact('universe'));
     }
 }

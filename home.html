@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Echoes of What If - Daily Parallel Universe News</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #111827; /* bg-gray-900 */
+      color: #d1d5db; /* text-gray-300 */
+    }
+    .font-playfair {
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* -- Creative Additions -- */
+
+    /* Glitch effect for the header */
+    @keyframes glitch {
+      2%, 64% { transform: translate(2px, 0) skew(0deg); }
+      4%, 60% { transform: translate(-2px, 0) skew(0deg); }
+      62% { transform: translate(0, 0) skew(5deg); }
+    }
+    .glitch-effect:hover {
+      animation: glitch 1s linear infinite;
+    }
+
+    /* Pulsing border for main content blocks */
+    @keyframes pulse-border {
+      0%, 100% { border-color: #374151; box-shadow: 0 0 5px #374151; }
+      50% { border-color: #fbbf24; box-shadow: 0 0 15px #fbbf24; }
+    }
+    .pulsing-border {
+      animation: pulse-border 5s ease-in-out infinite;
+    }
+
+    /* Glitch overlay for universe cards */
+    .universe-card .glitch-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='noise' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none; /* Allows clicks to go through to the card */
+    }
+    .universe-card:hover .glitch-overlay {
+      opacity: 0.05;
+    }
+
+    /* Live status indicator */
+    @keyframes pulse-indicator {
+      0%, 100% { background-color: #22c55e; box-shadow: 0 0 5px #22c55e; }
+      50% { background-color: #86efac; box-shadow: 0 0 10px #86efac; }
+    }
+    .live-indicator {
+      animation: pulse-indicator 2s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-gray-900">
+
+<!-- Live Anomaly Status Bar -->
+<div class="bg-black/50 backdrop-blur-sm text-center p-2 text-sm text-gray-300 flex items-center justify-center space-x-2 fixed top-0 w-full z-50">
+  <div class="live-indicator w-2 h-2 rounded-full"></div>
+  <span>TEMPORAL STREAM: <span class="font-bold text-green-400">STABLE</span> // ANOMALY INDEX: <span class="font-bold text-gray-100">0.013%</span></span>
+</div>
+
+<div class="container mx-auto p-4 md:p-8 pt-16">
+
+  <!-- Header -->
+  <header class="mb-16">
+    <img src="images/main_header.png" alt="Echoes of What If Header" class="w-full h-auto rounded-lg shadow-2xl">
+  </header>
+
+  <!-- Main Content Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Main Column -->
+    <main class="lg:col-span-2 space-y-8">
+      <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700 pulsing-border">
+        <h2 class="font-playfair text-3xl font-bold text-white mb-6 border-b border-gray-600 pb-4">Observed Parallel Universes</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+          <!-- Universe Card -->
+          <div class="universe-card bg-gray-900 rounded-lg shadow-md border border-gray-700 overflow-hidden flex flex-col transition-transform transform hover:-translate-y-2 relative">
+            <div class="glitch-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1618828941780-5b658c10a4e1?q=80&w=2070&auto=format&fit=crop" alt="Norse settlement" class="w-full h-48 object-cover">
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-xl font-bold text-white font-playfair">Universe: Zeta-V</h3>
+              <p class="text-md text-gray-300 mt-2 flex-grow"><strong class="font-semibold text-gray-100">Divergence Point:</strong> Leif Erikson's settlement in North America thrived, creating a permanent Norse presence.</p>
+              <!-- Data Readout -->
+              <div class="text-xs mt-4 space-y-2">
+                <p>Timeline Stability: <span class="font-mono text-green-400">98.4%</span></p>
+                <div class="w-full bg-gray-700 rounded-full h-1.5"><div class="bg-green-500 h-1.5 rounded-full" style="width: 98.4%"></div></div>
+                <p>Last Echo Received: <span class="font-mono text-gray-400">2h ago</span></p>
+                <p>Dominant Culture: <span class="font-mono text-cyan-400">Norse-Algonquian</span></p>
+              </div>
+              <a href="#" class="text-amber-400 hover:text-amber-300 font-semibold text-sm mt-4 inline-block self-start transition-colors z-10">View Latest Report &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Universe Card -->
+          <div class="universe-card bg-gray-900 rounded-lg shadow-md border border-gray-700 overflow-hidden flex flex-col transition-transform transform hover:-translate-y-2 relative">
+            <div class="glitch-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1521935389745-f9a1a3805364?q=80&w=1974&auto=format&fit=crop" alt="Ancient Library" class="w-full h-48 object-cover">
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-xl font-bold text-white font-playfair">Universe: Alpha-IV</h3>
+              <p class="text-md text-gray-300 mt-2 flex-grow"><strong class="font-semibold text-gray-100">Divergence Point:</strong> The Library of Alexandria was never destroyed, accelerating global technological progress.</p>
+              <!-- Data Readout -->
+              <div class="text-xs mt-4 space-y-2">
+                <p>Timeline Stability: <span class="font-mono text-yellow-400">76.1%</span></p>
+                <div class="w-full bg-gray-700 rounded-full h-1.5"><div class="bg-yellow-500 h-1.5 rounded-full" style="width: 76.1%"></div></div>
+                <p>Last Echo Received: <span class="font-mono text-gray-400">14h ago</span></p>
+                <p>Tech Tier: <span class="font-mono text-cyan-400">IV (Early Fusion)</span></p>
+              </div>
+              <a href="#" class="text-amber-400 hover:text-amber-300 font-semibold text-sm mt-4 inline-block self-start transition-colors z-10">View Latest Report &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Universe Card -->
+          <div class="universe-card bg-gray-900 rounded-lg shadow-md border border-gray-700 overflow-hidden flex flex-col transition-transform transform hover:-translate-y-2 relative">
+            <div class="glitch-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1563815194553-731613093b1d?q=80&w=2070&auto=format&fit=crop" alt="Dinosaurs roaming a landscape" class="w-full h-48 object-cover">
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-xl font-bold text-white font-playfair">Universe: Gamma-II</h3>
+              <p class="text-md text-gray-300 mt-2 flex-grow"><strong class="font-semibold text-gray-100">Divergence Point:</strong> The Cretaceous-Paleogene extinction event did not occur.</p>
+              <div class="text-xs mt-4 space-y-2">
+                <p>Timeline Stability: <span class="font-mono text-red-400">42.8%</span></p>
+                <div class="w-full bg-gray-700 rounded-full h-1.5"><div class="bg-red-500 h-1.5 rounded-full" style="width: 42.8%"></div></div>
+                <p>Last Echo Received: <span class="font-mono text-gray-400">3d ago</span></p>
+                <p>Threat Level: <span class="font-mono text-red-400">EXTREME</span></p>
+              </div>
+              <a href="#" class="text-amber-400 hover:text-amber-300 font-semibold text-sm mt-4 inline-block self-start transition-colors z-10">View Latest Report &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Universe Card -->
+          <div class="universe-card bg-gray-900 rounded-lg shadow-md border border-gray-700 overflow-hidden flex flex-col transition-transform transform hover:-translate-y-2 relative">
+            <div class="glitch-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1996&auto=format&fit=crop" alt="Roman architecture" class="w-full h-48 object-cover">
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-xl font-bold text-white font-playfair">Universe: Beta-VII</h3>
+              <p class="text-md text-gray-300 mt-2 flex-grow"><strong class="font-semibold text-gray-100">Divergence Point:</strong> The Roman Empire never collapsed, expanding into a global civilization.</p>
+              <div class="text-xs mt-4 space-y-2">
+                <p>Timeline Stability: <span class="font-mono text-green-400">99.2%</span></p>
+                <div class="w-full bg-gray-700 rounded-full h-1.5"><div class="bg-green-500 h-1.5 rounded-full" style="width: 99.2%"></div></div>
+                <p>Last Echo Received: <span class="font-mono text-gray-400">1h ago</span></p>
+                <p>Governance: <span class="font-mono text-cyan-400">Global Technocracy</span></p>
+              </div>
+              <a href="#" class="text-amber-400 hover:text-amber-300 font-semibold text-sm mt-4 inline-block self-start transition-colors z-10">View Latest Report &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Universe Card -->
+          <div class="universe-card bg-gray-900 rounded-lg shadow-md border border-gray-700 overflow-hidden flex flex-col transition-transform transform hover:-translate-y-2 relative">
+            <div class="glitch-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1517420704952-d9f39e95b43e?q=80&w=2070&auto=format&fit=crop" alt="Steampunk machinery" class="w-full h-48 object-cover">
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-xl font-bold text-white font-playfair">Universe: Delta-IX</h3>
+              <p class="text-md text-gray-300 mt-2 flex-grow"><strong class="font-semibold text-gray-100">Divergence Point:</strong> Charles Babbage completed his Analytical Engine, ushering in a Victorian-era digital age.</p>
+              <div class="text-xs mt-4 space-y-2">
+                <p>Timeline Stability: <span class="font-mono text-yellow-400">81.5%</span></p>
+                <div class="w-full bg-gray-700 rounded-full h-1.5"><div class="bg-yellow-500 h-1.5 rounded-full" style="width: 81.5%"></div></div>
+                <p>Last Echo Received: <span class="font-mono text-gray-400">2d ago</span></p>
+                <p>Primary Energy: <span class="font-mono text-cyan-400">Geothermal Steam</span></p>
+              </div>
+              <a href="#" class="text-amber-400 hover:text-amber-300 font-semibold text-sm mt-4 inline-block self-start transition-colors z-10">View Latest Report &rarr;</a>
+            </div>
+          </div>
+
+          <!-- Universe Card -->
+          <div class="universe-card bg-gray-900 rounded-lg shadow-md border border-gray-700 overflow-hidden flex flex-col transition-transform transform hover:-translate-y-2 relative">
+            <div class="glitch-overlay"></div>
+            <img src="https://images.unsplash.com/photo-1614728263952-84ea256ec677?q=80&w=1974&auto=format&fit=crop" alt="Rocket launch failure" class="w-full h-48 object-cover">
+            <div class="p-4 flex flex-col flex-grow">
+              <h3 class="text-xl font-bold text-white font-playfair">Universe: Epsilon-I</h3>
+              <p class="text-md text-gray-300 mt-2 flex-grow"><strong class="font-semibold text-gray-100">Divergence Point:</strong> The 1969 Apollo 11 moon landing failed, setting back space exploration by a century.</p>
+              <div class="text-xs mt-4 space-y-2">
+                <p>Timeline Stability: <span class="font-mono text-red-400">55.9%</span></p>
+                <div class="w-full bg-gray-700 rounded-full h-1.5"><div class="bg-red-500 h-1.5 rounded-full" style="width: 55.9%"></div></div>
+                <p>Last Echo Received: <span class="font-mono text-gray-400">1d ago</span></p>
+                <p>Global Conflict Index: <span class="font-mono text-yellow-400">HIGH</span></p>
+              </div>
+              <a href="#" class="text-amber-400 hover:text-amber-300 font-semibold text-sm mt-4 inline-block self-start transition-colors z-10">View Latest Report &rarr;</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Sidebar (Right Column) -->
+    <aside class="space-y-8">
+      <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700 pulsing-border">
+        <h3 class="font-playfair text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2">Latest Echoes</h3>
+        <div class="space-y-6">
+          <!-- News Item 1 -->
+          <a href="#" class="group flex items-start space-x-4">
+            <img src="https://images.unsplash.com/photo-1549462312-3f7c46452a5d?q=80&w=300&auto=format&fit=crop" alt="Norse Ship" class="w-16 h-16 rounded-md object-cover border-2 border-gray-700 group-hover:border-amber-400 transition-colors">
+            <div>
+              <p class="text-xs text-gray-400">Universe Zeta-V // <span class="font-mono">2h ago</span></p>
+              <h4 class="font-bold text-gray-200 group-hover:text-amber-400 transition-colors mt-1">Norse Electrum Coins Discovered in Mississippi Mounds</h4>
+            </div>
+          </a>
+          <!-- News Item 2 -->
+          <a href="#" class="group flex items-start space-x-4">
+            <img src="https://images.unsplash.com/photo-1590272588049-3aa6a1a123f1?q=80&w=300&auto=format&fit=crop" alt="Roman Statue" class="w-16 h-16 rounded-md object-cover border-2 border-gray-700 group-hover:border-amber-400 transition-colors">
+            <div>
+              <p class="text-xs text-gray-400">Universe Beta-VII // <span class="font-mono">1d ago</span></p>
+              <h4 class="font-bold text-gray-200 group-hover:text-amber-400 transition-colors mt-1">Senate Approves Funding for Mars Colony 'Nova Roma'</h4>
+            </div>
+          </a>
+          <!-- News Item 3 -->
+          <a href="#" class="group flex items-start space-x-4">
+            <img src="https://images.unsplash.com/photo-1605557112853-63a5e31c73a2?q=80&w=300&auto=format&fit=crop" alt="Steampunk city" class="w-16 h-16 rounded-md object-cover border-2 border-gray-700 group-hover:border-amber-400 transition-colors">
+            <div>
+              <p class="text-xs text-gray-400">Universe Delta-IX // <span class="font-mono">2d ago</span></p>
+              <h4 class="font-bold text-gray-200 group-hover:text-amber-400 transition-colors mt-1">Clockwork Constable Foils "Great Babbage Heist"</h4>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-6 shadow-lg border border-gray-700 pulsing-border">
+        <h3 class="font-playfair text-xl font-bold text-white mb-4 border-b border-gray-600 pb-2">ABOUT ECHOES</h3>
+        <p class="text-gray-400 text-sm leading-relaxed">
+          Powered by a Chronos-7 AI, "Echoes of What If" taps into temporal fluctuations across infinite realities. We are a window into the worlds that could have been. Our mission is to observe, record, and report on the histories that never were.
+        </p>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Footer -->
+  <footer class="text-center mt-12 pt-8 border-t border-gray-700">
+    <p class="text-gray-400">&copy; 2025 Echoes of What If. All timelines observed.</p>
+    <p class="text-xs text-gray-500 mt-1">Temporal Interference is strictly prohibited.</p>
+  </footer>
+
+</div>
+</body>
+</html>
+
