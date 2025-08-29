@@ -2,8 +2,8 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
@@ -20,7 +20,7 @@ return new class extends Migration
         // Migrate existing description data to long_description
         DB::table('parallel_universes')->whereNotNull('description')->update([
             'long_description' => DB::raw('description'),
-            'short_description' => DB::raw('LEFT(description, 500)')
+            'short_description' => DB::raw('SUBSTR(description, 1, 500)'),
         ]);
 
         // Remove the old description column
@@ -41,7 +41,7 @@ return new class extends Migration
 
         // Migrate long_description back to description
         DB::table('parallel_universes')->whereNotNull('long_description')->update([
-            'description' => DB::raw('long_description')
+            'description' => DB::raw('long_description'),
         ]);
 
         // Remove the new columns
